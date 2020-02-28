@@ -163,7 +163,7 @@ $ minio server /data1 /data2 /data3 /data4
 ```
 
 #### docker-compose 
-	- [docker-compose.yml](docker-compose/erasure-code/docker-compose.yml)
+- [docker-compose.yml](docker-compose/erasure-code/docker-compose.yml)
 
 ```yml
 version: '3'
@@ -179,7 +179,10 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - ./data1:/data
+      - ./data1:/data1
+      - ./data2:/data2
+      - ./data3:/data3
+      - ./data4:/data4
 ```
 
 
@@ -200,7 +203,7 @@ services:
 
 
 #### docker-compose : docker로 4대 서버 시뮬레이션 
-	- [docker-compose.yml](docker-compose/erasure-code/docker-compose.yml)
+- [docker-compose.yml](docker-compose/distributed/docker-compose.yml)
 
 ```yml
 version: '3'

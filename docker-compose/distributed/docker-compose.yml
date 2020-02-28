@@ -1,0 +1,53 @@
+version: '3'
+services:
+  minio1:
+    image: minio/minio
+    command: server http://minio{1...4}:9000/data
+    container_name: minio1
+    environment:
+      MINIO_ACCESS_KEY: infra
+      MINIO_SECRET_KEY: infrapass
+    restart: always
+    ports:
+      - "9001:9000"
+    volumes:
+      - ./minio1:/data
+
+  minio2:
+    image: minio/minio
+    command: server http://minio{1...4}:9000/data
+    container_name: minio2
+    environment:
+      MINIO_ACCESS_KEY: infra
+      MINIO_SECRET_KEY: infrapass
+    restart: always
+    ports:
+      - "9002:9000"
+    volumes:
+      - ./minio2:/data
+
+  minio3:
+    image: minio/minio
+    command: server http://minio{1...4}:9000/data
+    container_name: minio3
+    environment:
+      MINIO_ACCESS_KEY: infra
+      MINIO_SECRET_KEY: infrapass
+    restart: always
+    ports:
+      - "9003:9000"
+    volumes:
+      - ./minio3:/data
+
+  minio4:
+    image: minio/minio
+    command: server http://minio{1...4}:9000/data
+    container_name: minio4
+    environment:
+      MINIO_ACCESS_KEY: infra
+      MINIO_SECRET_KEY: infrapass
+    restart: always
+    ports:
+      - "9004:9000"
+    volumes:
+      - ./minio4:/data
