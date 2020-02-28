@@ -1,0 +1,18 @@
+version: '3'
+services:
+  minio1:
+    image: minio/minio
+    command: server /data1 /data2 /data3 /data4
+    container_name: minio
+    environment:
+      MINIO_ACCESS_KEY: infra
+      MINIO_SECRET_KEY: infrapass
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./data1:/data1
+      - ./data2:/data2
+      - ./data3:/data3
+      - ./data4:/data4
+
