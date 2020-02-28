@@ -258,7 +258,7 @@ services:
     ports:
       - "9004:9000"
     volumes:
-	  - ./minio4:/data
+      - ./minio4:/data
 ```
 
 
