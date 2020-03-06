@@ -1,6 +1,29 @@
 
-
 # MinIO 
+
+<!-- TOC -->
+
+#### Table of Contents
+- [Introduction](#introduction)
+- [Getting Started](#getting-started)
+  - [Quickstart Server](#quickstart-server)
+  - [Quickstart Client](#quickstart-client)
+  - [Server Files 형식](#server-files-형식)
+- [MinIO Erasure Code](#minio-erasure-code)
+  - [Erasure Code](#erasure-code)
+  - [Run MinIO Server with Erasure Code](#run-minio-server-with-erasure-code)
+    - [docker-compose](#docker-compose)
+- [Distributed MinIO](#distributed-minio)
+  - [Run distributed MinIO](#run-distributed-minio)
+    - [docker-compose : docker로 4대 서버 시뮬레이션](#docker-compose--docker로-4대-서버-시뮬레이션)
+- [MinIO Admin Guide](#minio-admin-guide)
+  - [user - Manage users](#user---manage-users)
+  - [heal - Heal disks, buckets and objects on MinIO server](#heal---heal-disks-buckets-and-objects-on-minio-server)
+- [SDK - Python](#sdk---python)
+
+<!-- /TOC -->
+
+## Introduction
 - https://min.io/
 - https://docs.min.io/
 - Open Source, S3 Compatible, Enterprise Hardened and Really, Really Fast
@@ -261,6 +284,76 @@ services:
       - ./minio4:/data
 ```
 
+
+## MinIO Admin Guide
+- mc 명령어를 통해 Admin 기능을 수행 
+- https://docs.min.io/docs/minio-admin-complete-guide.html
+
+```
+service     restart and stop all MinIO servers
+update      update all MinIO servers
+info        display MinIO server information
+user        manage users
+group       manage groups
+policy      manage policies defined in the MinIO server
+config      manage MinIO server configuration
+heal        heal disks, buckets and objects on MinIO server
+profile     generate profile data for debugging purposes
+top         provide top like statistics for MinIO
+trace       show http trace for MinIO server
+console     show console logs for MinIO server
+prometheus  manages prometheus config
+kms         perform KMS management operations
+```
+
+
+### user - Manage users
+- User 생성 및 삭제 
+
+```sh
+## create User
+$ mc admin user add myinfo cdecl cdeclpass
+
+## remove User
+# mc admin user remove myinfo cdecl
+
+$ mc admin user info myinfo cdecl             
+AccessKey: cdecl                              
+Status: enabled                               
+PolicyName:                                   
+MemberOf:                                     
+```
+
+- Policy
+
+```sh
+$ mc admin policy set myinfo readonly user=cdecl
+Policy readonly is set on user `cdecl`
+
+$ mc admin policy set myinfo writeonly user=cdecl
+Policy writeonly is set on user `cdecl`
+
+$ mc admin policy set myinfo readwrite user=cdecl
+Policy readwrite is set on user `cdecl`
+```
+
+
+### heal - Heal disks, buckets and objects on MinIO server
+- This command is only applicable for MinIO erasure coded setup (standalone and distributed).
+- Erasure Code 상태에서 특정 디스크의 데이터가 문제가 있을 경우, 균등하게 데이터를 복구 해줌 
+
+```sh
+$ mc admin heal -r myinfo
+ -  data1
+    2/2 objects; 403 MiB in 1s
+    ┌────────┬───┬─────────────────────┐
+    │ Green  │ 5 │ 100.0% ████████████ │
+    │ Yellow │ 0 │   0.0%              │
+    │ Red    │ 0 │   0.0%              │
+    │ Grey   │ 0 │   0.0%              │
+    └────────┴───┴─────────────────────┘
+
+```
 
 ## SDK - Python 
 - https://docs.min.io/docs/python-client-quickstart-guide.html
